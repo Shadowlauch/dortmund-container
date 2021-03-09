@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  app:
+    image: node:12-alpine
+    command: sh -c "npm i && npm start"
+    working_dir: /dortmund-container
+    restart: always
+    volumes:
+      - ./:/dortmund-container
+    environment:
+      - MYSQL_HOST
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DB
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - container-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_HOST: "%"
+    ports:
+    - 3312:3306
+
+
+volumes:
+  container-mysql-data:

@@ -9,14 +9,18 @@ export class Container {
     @Column()
     type: string;
 
-    @Column()
+    @Column({
+        type: "float"
+    })
     lat: number;
 
-    @Column()
+    @Column({
+        type: "float"
+    })
     lon: number;
 
     @Column()
-    internalId: number;
+    internalId: string;
 
     @Column()
     street: string;
