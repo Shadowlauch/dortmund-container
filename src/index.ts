@@ -10,6 +10,8 @@ createConnection().then(async connection => {
     // @ts-ignore
     const containers = site.matchAll(/depotContainer.push\(\['([^']+)', '([^']+)', '([^']+)', '([^']+)', '([^']+)', '([^']+)', '([^']+)'\]\);/g);
 
+    let changedCount = 0;
+
     for await (const [, type,, lat, lon, emptyDateString, internalId, street] of containers) {
         let container = await connection.manager.findOne(Container, {where: {internalId, type}});
 
@@ -33,7 +35,12 @@ createConnection().then(async connection => {
             newEmptyHistory.date = emptyDate;
             newEmptyHistory.container = container;
             await connection.manager.save(newEmptyHistory);
+            changedCount++;
         }
+    }
+
+    if (changedCount > 0) {
+        console.log(`${changedCount} container were emptied since the last check`);
     }
 
 }).catch(error => console.log(error));
