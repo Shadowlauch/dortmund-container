@@ -27,7 +27,7 @@ config();
     entities: [
       __dirname + '/entity/*.ts'
     ],
-    synchronize: true,
+    synchronize: false,
   }).then(async connection => {
     console.log('db connected');
 
